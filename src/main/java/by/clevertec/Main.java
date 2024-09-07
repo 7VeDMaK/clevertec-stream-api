@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) {
 //        task1();
 //        task2();
-//        task3();
+        task3();
 //        task4();
 //        task5();
 //        task6();
@@ -42,7 +42,7 @@ public class Main {
     public static void task1() {
         List<Animal> animals = Util.getAnimals();
         animals.stream()
-                .filter(animal -> animal.getAge() > 10 && animal.getAge() < 20)
+                .filter(animal -> animal.getAge() >= 10 && animal.getAge() <= 20)
                 .sorted(Comparator.comparingInt(Animal::getAge))
                 .skip(7*2)
                 .limit(7)
@@ -55,11 +55,16 @@ public class Main {
                 .filter(animal -> animal.getOrigin().equals("Japanese"))
                 .peek(animal -> animal.setBread(animal.getBread().toUpperCase()))
                 .forEach(System.out::println);
-    } // ???
+    } // ??? Добавить наверно
 
     public static void task3() {
         List<Animal> animals = Util.getAnimals();
-//        animals.stream() Продолжить ...
+        animals.stream()
+                .filter(animal -> animal.getAge() > 30)
+                .map(Animal::getOrigin)
+                .filter(origin -> origin.startsWith("A"))
+                .distinct()
+                .forEach(System.out::println);
     }
 
     public static void task4() {
