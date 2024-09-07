@@ -9,6 +9,7 @@ import by.clevertec.model.Person;
 import by.clevertec.model.Student;
 import by.clevertec.util.Util;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +24,8 @@ public class Main {
 //        task5();
 //        task6();
 //        task7();
-        task8();
-//        task9();
+//        task8();
+        task9();
 //        task10();
 //        task11();
 //        task12();
@@ -125,11 +126,16 @@ public class Main {
                 .skip(99)
                 .map(Animal::getAge)
                 .forEach(System.out::println);
-    }
+    } // max
 
     public static void task9() {
         List<Animal> animals = Util.getAnimals();
-//        animals.stream() Продолжить ...
+        char[] smallestArray = animals.stream()
+                .map(Animal::getBread)
+                .map(String::toCharArray)
+                .min(Comparator.comparingInt(arr -> arr.length))
+                .orElse(new char[0]);
+        System.out.println("smallestArray = " + smallestArray.length);
     }
 
     public static void task10() {
