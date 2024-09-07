@@ -21,8 +21,8 @@ public class Main {
 //        task3();
 //        task4();
 //        task5();
-        task6();
-//        task7();
+//        task6();
+        task7();
 //        task8();
 //        task9();
 //        task10();
@@ -105,7 +105,15 @@ public class Main {
 
     public static void task7() {
         List<Animal> animals = Util.getAnimals();
-//        animals.stream() Продолжить ...
+        Optional<Animal> isOceaniaAnimal = animals.stream()
+                .filter(animal -> animal.getOrigin().equals("Oceania"))
+                .findAny();
+        if (isOceaniaAnimal.isPresent()) {
+            System.out.println("Yes");
+        }
+        else {
+            System.out.println("No");
+        }
     }
 
     public static void task8() {
