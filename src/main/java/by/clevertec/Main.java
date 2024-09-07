@@ -22,8 +22,8 @@ public class Main {
 //        task4();
 //        task5();
 //        task6();
-        task7();
-//        task8();
+//        task7();
+        task8();
 //        task9();
 //        task10();
 //        task11();
@@ -118,7 +118,13 @@ public class Main {
 
     public static void task8() {
         List<Animal> animals = Util.getAnimals();
-//        animals.stream() Продолжить ...
+        animals.stream()
+                .sorted(Comparator.comparing(Animal::getBread))
+                .limit(100)
+                .sorted(Comparator.comparingInt(Animal::getAge))
+                .skip(99)
+                .map(Animal::getAge)
+                .forEach(System.out::println);
     }
 
     public static void task9() {
