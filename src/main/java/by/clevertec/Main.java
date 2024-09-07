@@ -11,6 +11,7 @@ import by.clevertec.util.Util;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
@@ -18,8 +19,8 @@ public class Main {
 //        task1();
 //        task2();
 //        task3();
-        task4();
-//        task5();
+//        task4();
+        task5();
 //        task6();
 //        task7();
 //        task8();
@@ -77,7 +78,16 @@ public class Main {
 
     public static void task5() {
         List<Animal> animals = Util.getAnimals();
-//        animals.stream() Продолжить ...
+        Optional<Animal> isHungurian = animals.stream()
+                .filter(animal -> animal.getAge() <= 30 && animal.getAge() >= 20)
+                .filter(animal -> animal.getOrigin().startsWith("Hungarian"))
+                .findAny();
+        if (isHungurian.isPresent()) {
+            System.out.println("Yes");
+        }
+        else {
+            System.out.println("No");
+        }
     }
 
     public static void task6() {
