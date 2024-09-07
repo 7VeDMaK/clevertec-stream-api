@@ -17,8 +17,8 @@ public class Main {
     public static void main(String[] args) {
 //        task1();
 //        task2();
-        task3();
-//        task4();
+//        task3();
+        task4();
 //        task5();
 //        task6();
 //        task7();
@@ -69,7 +69,10 @@ public class Main {
 
     public static void task4() {
         List<Animal> animals = Util.getAnimals();
-//        animals.stream() Продолжить ...
+        long count = animals.stream()
+                .filter(animal -> animal.getGender().equals("Female"))
+                .count();
+        System.out.println("count = " + count);
     }
 
     public static void task5() {
