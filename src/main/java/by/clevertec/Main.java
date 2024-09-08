@@ -30,8 +30,8 @@ public class Main {
 //        task17();
 //        task18();
 //        task19();
-        task20();
-//        task21();
+//        task20();
+        task21();
 //        task22();
     }
 
@@ -403,7 +403,13 @@ public class Main {
 
     public static void task21() {
         List<Student> students = Util.getStudents();
-//        students.stream() Продолжить ...
+        Map<String, Long> groupCount = students.stream()
+                .collect(Collectors.groupingBy(
+                        Student::getGroup,
+                        Collectors.counting()
+                        )
+                );
+        System.out.println(groupCount);
     }
 
     public static void task22() {
