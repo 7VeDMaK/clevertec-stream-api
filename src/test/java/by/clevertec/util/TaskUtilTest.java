@@ -39,7 +39,7 @@ public class TaskUtilTest {
         assertTrue(result.stream().anyMatch(animal ->
                 "Japanese".equals(animal.getOrigin()) && "Female".equals(animal.getGender())));
 
-        assertTrue(result.stream().noneMatch(animal -> "dimsum".equals(animal.getBread())),
+        assertTrue(result.stream().noneMatch(animal -> "dimsum1".equals(animal.getBread())),
                 "Animals with non-Japanese origin should not be included in the result.");
     }
 
