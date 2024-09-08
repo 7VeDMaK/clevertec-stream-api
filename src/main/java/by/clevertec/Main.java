@@ -31,8 +31,8 @@ public class Main {
 //        task18();
 //        task19();
 //        task20();
-        task21();
-//        task22();
+//        task21();
+        task22();
     }
 
     public static void task1() {
@@ -414,6 +414,14 @@ public class Main {
 
     public static void task22() {
         List<Student> students = Util.getStudents();
-//        students.stream() Продолжить ...
+        Map<String, Integer> facultyMinAges = students.stream()
+                .collect(Collectors.groupingBy(
+                        Student::getFaculty,
+                        Collectors.collectingAndThen(
+                                Collectors.minBy(Comparator.comparingInt(Student::getAge)),
+                                student -> student.map(Student::getAge).orElse(0)
+                        )
+                ));
+        System.out.println(facultyMinAges);
     }
 }
