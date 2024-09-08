@@ -25,8 +25,8 @@ public class Main {
 //        task11();
 //        task12();
 //        task13();
-        task14();
-//        task15();
+//        task14();
+        task15();
 //        task16();
 //        task17();
 //        task18();
@@ -286,9 +286,39 @@ public class Main {
         System.out.println("Total Revenue: " + String.format("%.2f", totalRevenue) + " $");
     }
 
+    private static double calculateTotalCost(Flower flower) {
+        final double WATER_COST_PER_CUBIC_METER = 1.39;
+        final int DAYS_IN_YEAR = 365;
+        final int YEARS = 5;
+        double waterConsumptionPerYear = flower.getWaterConsumptionPerDay() * DAYS_IN_YEAR;
+        double waterCostForFiveYears = (waterConsumptionPerYear * YEARS / 1000) * WATER_COST_PER_CUBIC_METER;
+        return flower.getPrice() + waterCostForFiveYears;
+    }
+
     public static void task15() {
+
         List<Flower> flowers = Util.getFlowers();
-//        flowers.stream() Продолжить ...
+        List<Flower> sortedFlowers = flowers.stream()
+                .sorted(Comparator
+                        .comparing(Flower::getOrigin).reversed()
+                        .thenComparing(Flower::getPrice)
+                        .thenComparing(Comparator.comparing(Flower::getWaterConsumptionPerDay).reversed())
+                )
+                .toList();
+
+        List<Flower> selectedFlowers = sortedFlowers.stream()
+                .filter(flower -> flower.getCommonName().compareToIgnoreCase("C") >= 0 &&
+                        flower.getCommonName().compareToIgnoreCase("S") <= 0)
+                .filter(flower -> flower.isShadePreferred() &&
+                        flower.getFlowerVaseMaterial().stream().anyMatch(
+                                material -> List.of("Glass", "Aluminum", "Steel").contains(material)))
+                .toList();
+
+        double totalCost = selectedFlowers.stream()
+                .mapToDouble(Main::calculateTotalCost)
+                .sum();
+
+        System.out.println("Total maintenance cost: " + String.format("%.2f", totalCost) + " $");
     }
 
     public static void task16() {
