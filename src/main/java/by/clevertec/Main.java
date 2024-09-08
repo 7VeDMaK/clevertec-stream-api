@@ -3,8 +3,6 @@ package by.clevertec;
 import by.clevertec.model.*;
 import by.clevertec.util.Util;
 
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -31,8 +29,8 @@ public class Main {
 //        task16();
 //        task17();
 //        task18();
-        task19();
-//        task20();
+//        task19();
+        task20();
 //        task21();
 //        task22();
     }
@@ -370,9 +368,37 @@ public class Main {
                 .forEach(System.out::println);
     }
 
+    private static int findExam1ScoreByStudentId(int studentId, List<Examination> exams) {
+        return exams.stream()
+                .filter(exam -> exam.getStudentId() == studentId)
+                .findFirst()
+                .map(Examination::getExam1)
+                .orElse(0);
+    }
+
     public static void task20() {
         List<Student> students = Util.getStudents();
-//        students.stream() Продолжить ...
+        List<Examination> examinations = Util.getExaminations();
+        Map<String, List<Integer>> facultyExam1Scores = students.stream()
+                .collect(Collectors.groupingBy(
+                        Student::getFaculty,
+                        Collectors.mapping(
+                                student -> findExam1ScoreByStudentId(student.getId(), examinations),
+                                Collectors.toList()
+                        )
+                ));
+
+        String facultyWithMaxAverage = facultyExam1Scores.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream().mapToInt(Integer::intValue).average().orElse(0.0)
+                ))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse("No faculty found");
+
+        System.out.println("Faculty with the highest average score for Exam 1: " + facultyWithMaxAverage);
     }
 
     public static void task21() {
