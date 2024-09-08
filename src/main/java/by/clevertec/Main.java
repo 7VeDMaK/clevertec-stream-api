@@ -4,6 +4,7 @@ import by.clevertec.model.*;
 import by.clevertec.util.Util;
 
 import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.*;
@@ -29,8 +30,8 @@ public class Main {
 //        task15();
 //        task16();
 //        task17();
-        task18();
-//        task19();
+//        task18();
+        task19();
 //        task20();
 //        task21();
 //        task22();
@@ -354,9 +355,19 @@ public class Main {
     }
 
     public static void task19() {
+        final String GROUP = "M-2";
         List<Student> students = Util.getStudents();
         List<Examination> examinations = Util.getExaminations();
-//        students.stream() Продолжить ...
+
+        List<Integer> studentIdPassed = examinations.stream()
+                .filter(examination -> examination.getExam3() > 4)
+                .map(Examination::getStudentId)
+                .toList();
+
+        students.stream().
+                filter(student -> studentIdPassed.contains(student.getId()))
+                .filter(student -> student.getGroup().equals(GROUP))
+                .forEach(System.out::println);
     }
 
     public static void task20() {
