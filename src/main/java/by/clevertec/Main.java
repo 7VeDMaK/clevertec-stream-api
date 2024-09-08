@@ -5,9 +5,11 @@ import by.clevertec.util.Util;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -23,8 +25,8 @@ public class Main {
 //        task9();
 //        task10();
 //        task11();
-        task12();
-//        task13();
+//        task12();
+        task13();
 //        task14();
 //        task15();
 //        task16();
@@ -161,15 +163,57 @@ public class Main {
                 .forEach(System.out::println);
     }
 
-    public static void task13() {
-        List<House> houses = Util.getHouses();
-//        houses.stream() Продолжить ...
+    private static int calculateAge(LocalDate birthDate) {
+        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
-    public static void task14() {
-        List<Car> cars = Util.getCars();
-//        cars.stream() Продолжить ...
+    public static void task13() {
+
+        final int MAX_EVACUATION_CAPACITY = 500;
+        final int CHILD_AGE_THRESHOLD = 18;
+        final int SENIOR_AGE_THRESHOLD = 65;
+
+        List<House> houses = Util.getHouses();
+        List<Person> peopleToEvacuate = houses.stream()
+                .flatMap(house -> house.getPersonList().stream())
+                .filter(person -> {
+                    int age = calculateAge(person.getDateOfBirth());
+                    return person.getOccupation().equalsIgnoreCase("Hospital")
+                            || age < CHILD_AGE_THRESHOLD
+                            || age >= SENIOR_AGE_THRESHOLD;
+                })
+                .sorted((p1, p2) -> {
+                    if (p1.getOccupation().equalsIgnoreCase("Hospital") && !p2.getOccupation().equalsIgnoreCase("Hospital")) {
+                        return -1;
+                    } else if (!p1.getOccupation().equalsIgnoreCase("Hospital") && p2.getOccupation().equalsIgnoreCase("Hospital")) {
+                        return 1;
+                    }
+
+                    int age1 = calculateAge(p1.getDateOfBirth());
+                    int age2 = calculateAge(p2.getDateOfBirth());
+
+                    if (age1 < CHILD_AGE_THRESHOLD && age2 >= CHILD_AGE_THRESHOLD) {
+                        return -1;
+                    } else if (age1 >= CHILD_AGE_THRESHOLD && age2 < CHILD_AGE_THRESHOLD) {
+                        return 1;
+                    } else if (age1 >= SENIOR_AGE_THRESHOLD && age2 < SENIOR_AGE_THRESHOLD) {
+                        return -1;
+                    } else if (age1 < SENIOR_AGE_THRESHOLD && age2 >= SENIOR_AGE_THRESHOLD) {
+                        return 1;
+                    }
+
+                    return 0;
+                })
+                .limit(MAX_EVACUATION_CAPACITY)
+                .toList();
+
+        peopleToEvacuate.forEach(System.out::println);
     }
+
+//    public static void task14() {
+//        List<Car> cars = Util.getCars();
+//        cars.stream() Продолжить ...
+//    }
 
     public static void task15() {
         List<Flower> flowers = Util.getFlowers();
