@@ -3,6 +3,8 @@ package by.clevertec;
 import by.clevertec.model.*;
 import by.clevertec.util.Util;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +22,8 @@ public class Main {
 //        task8();
 //        task9();
 //        task10();
-        task11();
-//        task12();
+//        task11();
+        task12();
 //        task13();
 //        task14();
 //        task15();
@@ -140,7 +142,6 @@ public class Main {
         List<Animal> animals = Util.getAnimals();
         Long count = animals.stream()
                 .filter(animal -> animal.getOrigin().equals("Indonesian"))
-                .map(Animal::getAge)
                 .count();
         Double sum = Double.valueOf(animals.stream()
                 .filter(animal -> animal.getOrigin().equals("Indonesian"))
@@ -151,7 +152,13 @@ public class Main {
 
     public static void task12() {
         List<Person> persons = Util.getPersons();
-//        persons.stream() Продолжить ...
+        persons.stream()
+                .filter(person -> person.getGender().equals("Male"))
+                .filter(person -> person.getDateOfBirth().plusYears(18).isBefore(LocalDate.now()))
+                .filter(person -> person.getDateOfBirth().plusYears(27).isAfter(LocalDate.now()))
+                .sorted(Comparator.comparingInt(Person::getRecruitmentGroup))
+                .limit(200)
+                .forEach(System.out::println);
     }
 
     public static void task13() {
