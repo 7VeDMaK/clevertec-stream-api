@@ -28,8 +28,8 @@ public class Main {
 //        task14();
 //        task15();
 //        task16();
-        task17();
-//        task18();
+//        task17();
+        task18();
 //        task19();
 //        task20();
 //        task21();
@@ -324,7 +324,7 @@ public class Main {
     public static void task16() {
         List<Student> students = Util.getStudents();
         students.stream()
-                .filter(student -> student.getAge() > 18)
+                .filter(student -> student.getAge() < 18)
                 .sorted(Comparator.comparing(Student::getSurname)
                         .thenComparingInt(Student::getAge))
                 .forEach(System.out::println);
@@ -340,12 +340,22 @@ public class Main {
 
     public static void task18() {
         List<Student> students = Util.getStudents();
-        List<Examination> examinations = Util.getExaminations();
-//        students.stream() Продолжить ...
+        Map<String, Double> facultyAverageAges = students.stream()
+                .collect(Collectors.groupingBy(
+                        Student::getFaculty,
+                        Collectors.averagingInt(Student::getAge)
+                ));
+
+        facultyAverageAges.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .forEach(entry ->
+                        System.out.println("Faculty: " + entry.getKey() + ", Average Age: " + String.format("%.2f", entry.getValue()))
+                );
     }
 
     public static void task19() {
         List<Student> students = Util.getStudents();
+        List<Examination> examinations = Util.getExaminations();
 //        students.stream() Продолжить ...
     }
 
