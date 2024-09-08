@@ -1,15 +1,8 @@
 package by.clevertec;
 
-import by.clevertec.model.Animal;
-import by.clevertec.model.Car;
-import by.clevertec.model.Examination;
-import by.clevertec.model.Flower;
-import by.clevertec.model.House;
-import by.clevertec.model.Person;
-import by.clevertec.model.Student;
+import by.clevertec.model.*;
 import by.clevertec.util.Util;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +19,8 @@ public class Main {
 //        task7();
 //        task8();
 //        task9();
-        task10();
-//        task11();
+//        task10();
+        task11();
 //        task12();
 //        task13();
 //        task14();
@@ -46,7 +39,7 @@ public class Main {
         animals.stream()
                 .filter(animal -> animal.getAge() >= 10 && animal.getAge() <= 20)
                 .sorted(Comparator.comparingInt(Animal::getAge))
-                .skip(7*2)
+                .skip(7 * 2)
                 .limit(7)
                 .forEach(System.out::println);
     }
@@ -85,8 +78,7 @@ public class Main {
                 .findAny();
         if (isHungurian.isPresent()) {
             System.out.println("Yes");
-        }
-        else {
+        } else {
             System.out.println("No");
         }
     }
@@ -98,8 +90,7 @@ public class Main {
                 .findAny();
         if (isUnusualGender.isPresent()) {
             System.out.println("Yes");
-        }
-        else {
+        } else {
             System.out.println("No");
         }
     }
@@ -111,8 +102,7 @@ public class Main {
                 .findAny();
         if (isOceaniaAnimal.isPresent()) {
             System.out.println("Yes");
-        }
-        else {
+        } else {
             System.out.println("No");
         }
     }
@@ -148,7 +138,15 @@ public class Main {
 
     public static void task11() {
         List<Animal> animals = Util.getAnimals();
-//        animals.stream() Продолжить ...
+        Long count = animals.stream()
+                .filter(animal -> animal.getOrigin().equals("Indonesian"))
+                .map(Animal::getAge)
+                .count();
+        Double sum = Double.valueOf(animals.stream()
+                .filter(animal -> animal.getOrigin().equals("Indonesian"))
+                .map(Animal::getAge)
+                .reduce(Integer::sum).orElse(0));
+        System.out.println("average = " + sum / count);
     }
 
     public static void task12() {
