@@ -6,9 +6,7 @@ import by.clevertec.util.Util;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -26,8 +24,8 @@ public class Main {
 //        task10();
 //        task11();
 //        task12();
-        task13();
-//        task14();
+//        task13();
+        task14();
 //        task15();
 //        task16();
 //        task17();
@@ -210,10 +208,83 @@ public class Main {
         peopleToEvacuate.forEach(System.out::println);
     }
 
-//    public static void task14() {
-//        List<Car> cars = Util.getCars();
-//        cars.stream() Продолжить ...
-//    }
+    public static void task14() {
+        final double COST_PER_TON = 7.14;
+        final int MASS_THRESHOLD_ECHELON_2 = 1500;
+        final int MASS_THRESHOLD_ECHELON_3 = 4000;
+        final int PRICE_THRESHOLD_ECHELON_5 = 40000;
+
+        List<Car> cars = Util.getCars();
+        Map<String, List<Car>> echelonCars = new HashMap<>();
+        echelonCars.put("Turkmenistan", new ArrayList<>());
+        echelonCars.put("Uzbekistan", new ArrayList<>());
+        echelonCars.put("Kazakhstan", new ArrayList<>());
+        echelonCars.put("Kyrgyzstan", new ArrayList<>());
+        echelonCars.put("Russia", new ArrayList<>());
+        echelonCars.put("Mongolia", new ArrayList<>());
+
+        cars.stream()
+                .filter(car -> car.getCarMake().equalsIgnoreCase("Jaguar") || car.getColor().equalsIgnoreCase("White"))
+                .forEach(car -> echelonCars.get("Turkmenistan").add(car));
+
+        List<Car> remainingCars = cars.stream()
+                .filter(car -> !(car.getCarMake().equalsIgnoreCase("Jaguar") || car.getColor().equalsIgnoreCase("White")))
+                .collect(Collectors.toList());
+
+        remainingCars.stream()
+                .filter(car -> car.getMass() < MASS_THRESHOLD_ECHELON_2 &&
+                        List.of("BMW", "Lexus", "Chrysler", "Toyota").contains(car.getCarMake()))
+                .forEach(car -> echelonCars.get("Uzbekistan").add(car));
+
+        remainingCars = remainingCars.stream()
+                .filter(car -> !(car.getMass() < MASS_THRESHOLD_ECHELON_2 &&
+                        List.of("BMW", "Lexus", "Chrysler", "Toyota").contains(car.getCarMake())))
+                .collect(Collectors.toList());
+
+        remainingCars.stream()
+                .filter(car -> (car.getColor().equalsIgnoreCase("Black") && car.getMass() > MASS_THRESHOLD_ECHELON_3) ||
+                        List.of("GMC", "Dodge").contains(car.getCarMake()))
+                .forEach(car -> echelonCars.get("Kazakhstan").add(car));
+
+        remainingCars = remainingCars.stream()
+                .filter(car -> !((car.getColor().equalsIgnoreCase("Black") && car.getMass() > MASS_THRESHOLD_ECHELON_3) ||
+                        List.of("GMC", "Dodge").contains(car.getCarMake())))
+                .collect(Collectors.toList());
+
+        remainingCars.stream()
+                .filter(car -> car.getReleaseYear() < 1982 || List.of("Civic", "Cherokee").contains(car.getCarModel()))
+                .forEach(car -> echelonCars.get("Kyrgyzstan").add(car));
+
+        remainingCars = remainingCars.stream()
+                .filter(car -> !(car.getReleaseYear() < 1982 || List.of("Civic", "Cherokee").contains(car.getCarModel())))
+                .collect(Collectors.toList());
+
+        remainingCars.stream()
+                .filter(car -> (!List.of("Yellow", "Red", "Green", "Blue").contains(car.getColor())) || car.getPrice() > PRICE_THRESHOLD_ECHELON_5)
+                .forEach(car -> echelonCars.get("Russia").add(car));
+
+        remainingCars = remainingCars.stream()
+                .filter(car -> !(car.getColor().equalsIgnoreCase("Yellow") || car.getColor().equalsIgnoreCase("Red") ||
+                        car.getColor().equalsIgnoreCase("Green") || car.getColor().equalsIgnoreCase("Blue")) &&
+                        car.getPrice() <= PRICE_THRESHOLD_ECHELON_5)
+                .collect(Collectors.toList());
+
+        remainingCars.stream()
+                .filter(car -> car.getVin().contains("59"))
+                .forEach(car -> echelonCars.get("Mongolia").add(car));
+
+        Map<String, Double> transportCosts = new HashMap<>();
+        double totalRevenue = 0;
+
+        for (String country : echelonCars.keySet()) {
+            int totalMass = echelonCars.get(country).stream().mapToInt(Car::getMass).sum();
+            double transportCost = (totalMass / 1000.0) * COST_PER_TON;
+            transportCosts.put(country, transportCost);
+            totalRevenue += transportCost;
+        }
+        transportCosts.forEach((country, cost) -> System.out.println(country + ": " + String.format("%.2f", cost) + " $"));
+        System.out.println("Total Revenue: " + String.format("%.2f", totalRevenue) + " $");
+    }
 
     public static void task15() {
         List<Flower> flowers = Util.getFlowers();
