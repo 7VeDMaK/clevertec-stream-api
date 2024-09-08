@@ -1,11 +1,22 @@
 package by.clevertec;
 
-import by.clevertec.model.*;
+import by.clevertec.model.Animal;
+import by.clevertec.model.Car;
+import by.clevertec.model.Examination;
+import by.clevertec.model.Flower;
+import by.clevertec.model.House;
+import by.clevertec.model.Person;
+import by.clevertec.model.Student;
+import by.clevertec.util.TaskUtil;
 import by.clevertec.util.Util;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -37,110 +48,60 @@ public class Main {
 
     public static void task1() {
         List<Animal> animals = Util.getAnimals();
-        animals.stream()
-                .filter(animal -> animal.getAge() >= 10 && animal.getAge() <= 20)
-                .sorted(Comparator.comparingInt(Animal::getAge))
-                .skip(7 * 2)
-                .limit(7)
+        TaskUtil.task1(animals)
                 .forEach(System.out::println);
     }
 
     public static void task2() {
         List<Animal> animals = Util.getAnimals();
-        List<Animal> modifiedAnimals = animals.stream()
-                .filter(animal -> animal.getOrigin().equals("Japanese"))
-                .peek(animal -> {
-                    if ("Female".equals(animal.getGender())) {
-                        animal.setBread(animal.getBread().toUpperCase());
-                    }
-                })
-                .toList();
-        modifiedAnimals.forEach(System.out::println);
+        TaskUtil.task2(animals)
+                .forEach(System.out::println);
     }
 
     public static void task3() {
         List<Animal> animals = Util.getAnimals();
-        animals.stream()
-                .filter(animal -> animal.getAge() > 30)
-                .map(Animal::getOrigin)
-                .filter(origin -> origin.startsWith("A"))
-                .distinct()
+        TaskUtil.task3(animals)
                 .forEach(System.out::println);
     }
 
     public static void task4() {
         List<Animal> animals = Util.getAnimals();
-        long count = animals.stream()
-                .filter(animal -> animal.getGender().equals("Female"))
-                .count();
-        System.out.println("count = " + count);
+        System.out.println("count = " + TaskUtil.task4(animals));
     }
 
     public static void task5() {
         List<Animal> animals = Util.getAnimals();
-        boolean hasHungarian = animals.stream()
-                .filter(animal -> animal.getAge() >= 20 && animal.getAge() <= 30)
-                .anyMatch(animal -> animal.getOrigin().equals("Hungarian"));
-        System.out.println(hasHungarian ? "Yes" : "No");
+        System.out.println(TaskUtil.task5(animals) ? "Yes" : "No");
     }
 
     public static void task6() {
         List<Animal> animals = Util.getAnimals();
-        boolean hasUnusualGender = animals.stream()
-                .anyMatch(animal -> !animal.getGender().equals("Female") && !animal.getGender().equals("Male"));
-        System.out.println(hasUnusualGender ? "Yes" : "No");
+        System.out.println(TaskUtil.task6(animals) ? "Yes" : "No");
     }
 
     public static void task7() {
         List<Animal> animals = Util.getAnimals();
-        boolean hasNoOceaniaAnimals = animals.stream()
-                .noneMatch(animal -> animal.getOrigin().equals("Oceania"));
-        System.out.println(hasNoOceaniaAnimals ? "No" : "Yes");
+        System.out.println(TaskUtil.task7(animals) ? "No" : "Yes");
     }
 
     public static void task8() {
         List<Animal> animals = Util.getAnimals();
-        animals.stream()
-                .sorted(Comparator.comparing(Animal::getBread)
-                        .thenComparingInt(Animal::getAge))
-                .limit(100)
-                .max(Comparator.comparingInt(Animal::getAge))
-                .map(Animal::getAge)
-                .ifPresent(System.out::println);
-
+        System.out.println(TaskUtil.task8(animals));
     }
 
     public static void task9() {
         List<Animal> animals = Util.getAnimals();
-        int minLength = animals.stream()
-                .map(Animal::getBread)
-                .map(String::toCharArray)
-                .mapToInt(arr -> arr.length)
-                .min()
-                .orElse(0);
-        System.out.println("Length of the smallest array = " + minLength);
+        System.out.println("Length of the smallest array = " + TaskUtil.task9(animals));
     }
 
     public static void task10() {
         List<Animal> animals = Util.getAnimals();
-        int sum = animals.stream()
-                .map(Animal::getAge)
-                .reduce(Integer::sum)
-                .orElse(0);
-        System.out.println("Sum = " + sum);
+        System.out.println("Sum = " + TaskUtil.task10(animals));
     }
 
     public static void task11() {
         List<Animal> animals = Util.getAnimals();
-        long count = animals.stream()
-                .filter(animal -> animal.getOrigin().equals("Indonesian"))
-                .count();
-        int sum = animals.stream()
-                .filter(animal -> animal.getOrigin().equals("Indonesian"))
-                .mapToInt(Animal::getAge)
-                .sum();
-        double average = (count > 0) ? (double) sum / count : 0.0;
-        System.out.println("Average = " + average);
+        System.out.println("Average = " + TaskUtil.task11(animals));
     }
 
     public static void task12() {
