@@ -27,8 +27,8 @@ public class Main {
 //        task13();
 //        task14();
 //        task15();
-        task16();
-//        task17();
+//        task16();
+        task17();
 //        task18();
 //        task19();
 //        task20();
@@ -333,6 +333,8 @@ public class Main {
     public static void task17() {
         List<Student> students = Util.getStudents();
         students.stream()
+                .map(Student::getGroup)
+                .distinct()
                 .forEach(System.out::println);
     }
 
